@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class ZombieAI : MonoBehaviour
 {
-    public Transform[] waypoints;  // Add the patrol waypoints
+    public Transform[] waypoints;  // 4 patrol waypoints
     public float detectionRange = 2.3f;
     public float attackRange = 2f;
     public float patrolSpeed = 2f;
@@ -22,10 +22,9 @@ public class ZombieAI : MonoBehaviour
 
     void Start()
     {
-        if (tryAgainMenu != null)
-        {
-            tryAgainMenu.SetActive(false); // Initially hide the Try Again menu
-        }
+     
+        tryAgainMenu.SetActive(false); 
+        
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -40,19 +39,19 @@ public class ZombieAI : MonoBehaviour
         {
             PlayerDies();
         }
-        // Check distance to player
+        // Check distance - player
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer <= attackRange)
         {
-            // Attack the player
+            // atk
             agent.isStopped = true;
             animator.SetBool("isWalking", false);
             animator.SetBool("IsAttacking", true);
         }
         else if (distanceToPlayer <= detectionRange)
         {
-            // Chase the player
+            // chase
             agent.isStopped = false;
             agent.speed = chaseSpeed;
             agent.SetDestination(player.position);
@@ -95,14 +94,14 @@ public class ZombieAI : MonoBehaviour
         playerIsDead = true;
         Debug.Log("Player has been detected and died!");
 
-        // Disable the player's movement using vThirdPersonController (from Invector package)
+        // player freeze (died)
         vThirdPersonController playerController = player.GetComponent<vThirdPersonController>();
         if (playerController != null)
         {
             playerController.enabled = false;
         }
 
-        // Show the Try Again UI
+        // Try Again UI
         if (tryAgainMenu != null)
         {
             tryAgainMenu.SetActive(true);
@@ -110,15 +109,14 @@ public class ZombieAI : MonoBehaviour
 
        
 
-        // Optionally, restart the scene after a few seconds or wait for player input
-        // StartCoroutine(RestartGame()); // Uncomment if you still want automatic restart
-    }
+        // auto re
+        StartCoroutine(RestartGame()); 
 
 
 
     private IEnumerator RestartGame()
     {
-        // Optionally wait before restarting (or let the player click a button)
+        // autorestart
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -128,3 +126,4 @@ public class ZombieAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
 }
+
