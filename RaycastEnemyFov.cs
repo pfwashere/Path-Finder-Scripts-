@@ -20,18 +20,18 @@ public class EnemyFollow : MonoBehaviour
 
     void Start()
     {      
-        lineRenderers = new LineRenderer[rayCount];
-        for (int i = 0; i < rayCount; i++)
+        lineRenderers = new LineRenderer[rayCount]; // สร้าง Array LineRenderer ตามจน.เส้น
+        for (int i = 0; i < rayCount; i++) //loop จนกว่าจะครบ
         {
             GameObject lineObj = new GameObject($"LineRenderer_{i}");
             lineObj.transform.parent = transform;
             LineRenderer lr = lineObj.AddComponent<LineRenderer>();
             lr.startWidth = lineWidth;
-            lr.endWidth = lineWidth;
+            lr.endWidth = lineWidth; 
             lr.material = new Material(Shader.Find("Sprites/Default"));
             lr.startColor = lineStartColor;
             lr.endColor = lineEndColor;
-            lineRenderers[i] = lr;
+            lineRenderers[i] = lr; //เก็บ LineRenderer นี้ลงใน Array
         }
     }
 
@@ -39,19 +39,19 @@ public class EnemyFollow : MonoBehaviour
     {
         canSeePlayer = false;
         float halfFOV = fieldOfView / 2f;
-        float angleStep = fieldOfView / (rayCount - 1);
+        float angleStep = fieldOfView / (rayCount - 1); //ค.ต่างมุม 
 
-        for (int i = 0; i < rayCount; i++)
+        for (int i = 0; i < rayCount; i++) 
         {
-            float angle = -halfFOV + (i * angleStep);
+            float angle = -halfFOV + (i * angleStep); 
             Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * transform.forward;
 
-            RaycastHit hit;
+            RaycastHit hit; //เก็บข้อมูลว่าโดน
 
             if (Physics.Raycast(transform.position, rayDirection, out hit, raycastDistance, layerMask))
             {            
-                lineRenderers[i].SetPosition(0, transform.position);
-                lineRenderers[i].SetPosition(1, hit.point);
+                lineRenderers[i].SetPosition(0, transform.position); 
+                lineRenderers[i].SetPosition(1, hit.point); //วาดเส้นจากศัตรูไปถึงตำแหน่งที่ Ray ชน
               
                 if (hit.collider.CompareTag("Player"))
                 {
@@ -59,10 +59,10 @@ public class EnemyFollow : MonoBehaviour
                     Debug.Log("Player spotted!");
                 }
             }
-            else
+            else //ไม่ชน
             {               
                 lineRenderers[i].SetPosition(0, transform.position);
-                lineRenderers[i].SetPosition(1, transform.position + rayDirection * raycastDistance);
+                lineRenderers[i].SetPosition(1, transform.position + rayDirection * raycastDistance); //วาดจนสุด
             }
         }
         
@@ -74,11 +74,12 @@ public class EnemyFollow : MonoBehaviour
 
     private void FollowPlayer()
     {       
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        Vector3 directionToPlayer = (player.position - transform.position).normalized; //คำนวณ vector ไปหาผู้เล่น
        
-        transform.position += directionToPlayer * followSpeed * Time.deltaTime;
+        transform.position += directionToPlayer * followSpeed * Time.deltaTime; //เดินไปหาplayer
 
         Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * followSpeed);
     }
 }
+
