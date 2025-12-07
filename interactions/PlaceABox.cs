@@ -30,20 +30,19 @@ public class PlaceABox : MonoBehaviour
             }
             else
             {
-                // Start a coroutine to display the warning message
                 StartCoroutine(ShowWarning());
             }
         }
     }
 
-    // Coroutine to show warning for 3 seconds
+
     private IEnumerator ShowWarning()
     {
         if (uiElementWarning != null)
         {
-            uiElementWarning.SetActive(true); // Show the warning UI
-            yield return new WaitForSeconds(3f); // Wait for 3 seconds
-            uiElementWarning.SetActive(false); // Hide the warning UI
+            uiElementWarning.SetActive(true); //warning 
+            yield return new WaitForSeconds(3f);
+            uiElementWarning.SetActive(false); //hide warning
         }
     }
 
