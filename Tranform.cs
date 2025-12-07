@@ -28,10 +28,9 @@ public class TransformToSmaller : MonoBehaviour
 
     private void TransformPlayer()
     {
-        // Calculate position behind the player
         Vector3 effectPosition = player.position - player.forward * effectOffset;
 
-        // Instantiate effect slightly behind the player
+        // ควันขึนหลัง player
         GameObject fx = Instantiate(TransformFX, effectPosition, player.rotation);
         ParticleSystem explosionParticles = fx.GetComponent<ParticleSystem>();
         audioSource.Play();
@@ -46,3 +45,4 @@ public class TransformToSmaller : MonoBehaviour
         }
     }
 }
+
